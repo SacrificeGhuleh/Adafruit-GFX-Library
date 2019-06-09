@@ -1342,7 +1342,7 @@ void Adafruit_GFX::getTextBounds(const char *str, int16_t x, int16_t y,
 /**************************************************************************/
 /*!
     @brief    Helper to determine size of a string with current font/size. Pass string and a cursor position, returns UL corner and W,H.
-    @param    str    The ascii string to measure (as an arduino String() class)
+    @param    str    The ascii string to measure (as an arduino std::string() class)
     @param    x      The current cursor X
     @param    y      The current cursor Y
     @param    x1     The boundary X coordinate, set by function
@@ -1351,7 +1351,7 @@ void Adafruit_GFX::getTextBounds(const char *str, int16_t x, int16_t y,
     @param    h      The boundary height, set by function
 */
 /**************************************************************************/
-void Adafruit_GFX::getTextBounds(const String &str, int16_t x, int16_t y,
+void Adafruit_GFX::getTextBounds(const std::string &str, int16_t x, int16_t y,
         int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h) {
     if (str.length() != 0) {
         getTextBounds(const_cast<char*>(str.c_str()), x, y, x1, y1, w, h);
@@ -1359,40 +1359,6 @@ void Adafruit_GFX::getTextBounds(const String &str, int16_t x, int16_t y,
 }
 
 
-/**************************************************************************/
-/*!
-    @brief    Helper to determine size of a PROGMEM string with current font/size. Pass string and a cursor position, returns UL corner and W,H.
-    @param    str     The flash-memory ascii string to measure
-    @param    x       The current cursor X
-    @param    y       The current cursor Y
-    @param    x1      The boundary X coordinate, set by function
-    @param    y1      The boundary Y coordinate, set by function
-    @param    w      The boundary width, set by function
-    @param    h      The boundary height, set by function
-*/
-/**************************************************************************/
-void Adafruit_GFX::getTextBounds(const __FlashStringHelper *str,
-        int16_t x, int16_t y, int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h) {
-    uint8_t *s = (uint8_t *)str, c;
-
-    *x1 = x;
-    *y1 = y;
-    *w  = *h = 0;
-
-    int16_t minx = _width, miny = _height, maxx = -1, maxy = -1;
-
-    while((c = pgm_read_byte(s++)))
-        charBounds(c, &x, &y, &minx, &miny, &maxx, &maxy);
-
-    if(maxx >= minx) {
-        *x1 = minx;
-        *w  = maxx - minx + 1;
-    }
-    if(maxy >= miny) {
-        *y1 = miny;
-        *h  = maxy - miny + 1;
-    }
-}
 
 /**************************************************************************/
 /*!
@@ -1400,7 +1366,7 @@ void Adafruit_GFX::getTextBounds(const __FlashStringHelper *str,
     @param   i  True if you want to invert, false to make 'normal'
 */
 /**************************************************************************/
-void Adafruit_GFX::invertDisplay(boolean i) {
+void Adafruit_GFX::invertDisplay(bool i) {
     // Do nothing, must be subclassed if supported by hardware
 }
 
@@ -1479,7 +1445,7 @@ void Adafruit_GFX_Button::initButtonUL(
    @param    inverted Whether to draw with fill/text swapped to indicate 'pressed'
 */
 /**************************************************************************/
-void Adafruit_GFX_Button::drawButton(boolean inverted) {
+void Adafruit_GFX_Button::drawButton(bool inverted) {
   uint16_t fill, outline, text;
 
   if(!inverted) {
@@ -1511,7 +1477,7 @@ void Adafruit_GFX_Button::drawButton(boolean inverted) {
     @returns  True if within button graphics outline
 */
 /**************************************************************************/
-boolean Adafruit_GFX_Button::contains(int16_t x, int16_t y) {
+bool Adafruit_GFX_Button::contains(int16_t x, int16_t y) {
   return ((x >= _x1) && (x < (int16_t) (_x1 + _w)) &&
           (y >= _y1) && (y < (int16_t) (_y1 + _h)));
 }
@@ -1522,7 +1488,7 @@ boolean Adafruit_GFX_Button::contains(int16_t x, int16_t y) {
    @returns  True if was not-pressed before, now is.
 */
 /**************************************************************************/
-boolean Adafruit_GFX_Button::justPressed() { return (currstate && !laststate); }
+bool Adafruit_GFX_Button::justPressed() { return (currstate && !laststate); }
 
 /**************************************************************************/
 /*!
@@ -1530,7 +1496,7 @@ boolean Adafruit_GFX_Button::justPressed() { return (currstate && !laststate); }
    @returns  True if was pressed before, now is not.
 */
 /**************************************************************************/
-boolean Adafruit_GFX_Button::justReleased() { return (!currstate && laststate); }
+bool Adafruit_GFX_Button::justReleased() { return (!currstate && laststate); }
 
 // -------------------------------------------------------------------------
 
